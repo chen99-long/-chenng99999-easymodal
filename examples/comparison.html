@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyModal - 主题对比</title>
+    <style>
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 16px 0;
+        }
+        
+        .header p {
+            font-size: 1.125rem;
+            color: #64748b;
+            margin: 0;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .theme-preview {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+        
+        .theme-preview:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .theme-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .theme-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+        
+        .theme-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: #f1f5f9;
+            color: #475569;
+        }
+        
+        .theme-description {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin: 0 0 20px 0;
+            line-height: 1.5;
+        }
+        
+        .preview-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .preview-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .preview-btn:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+        
+        .preview-btn.primary {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+        
+        .preview-btn.primary:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+        
+        .features-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            margin-top: 40px;
+        }
+        
+        .features-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 24px 0;
+            text-align: center;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 16px;
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 4px 0;
+        }
+        
+        .feature-desc {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin: 0;
+        }
+        
+        .demo-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            margin-top: 24px;
+            text-align: center;
+        }
+        
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 16px 0;
+        }
+        
+        .demo-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .demo-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 0.875rem;
+        }
+        
+        .demo-btn.showcase {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .demo-btn.showcase:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .demo-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>主题对比展示</h1>
+            <p>体验 EasyModal 的五种精美主题设计</p>
+        </div>
+        
+        <div class="comparison-grid">
+            <div class="theme-preview">
+                <div class="theme-header">
+                    <h3 class="theme-name">🎨 默认主题</h3>
+                    <span class="theme-badge">Shadcn风格</span>
+                </div>
+                <p class="theme-description">现代化的设计风格，清晰的层次结构，优雅的动画效果。采用了流行的Shadcn设计系统。</p>
+                <div class="preview-buttons">
+                    <button class="preview-btn primary" onclick="showModal('default', 'confirm')">体验</button>
+                    <button class="preview-btn" onclick="showModal('default', 'alert')">Alert</button>
+                    <button class="preview-btn" onclick="showModal('default', 'warning')">Warning</button>
+                </div>
+            </div>
+            
+            <div class="theme-preview">
+                <div class="theme-header">
+                    <h3 class="theme-name">🌙 深色主题</h3>
+                    <span class="theme-badge">护眼模式</span>
+                </div>
+                <p class="theme-description">优雅的暗色调界面，减少眼部疲劳，适合在低光环境下使用。完美的夜间模式体验。</p>
+                <div class="preview-buttons">
+                    <button class="preview-btn primary" onclick="showModal('dark', 'confirm')">体验</button>
+                    <button class="preview-btn" onclick="showModal('dark', 'alert')">Alert</button>
+                    <button class="preview-btn" onclick="showModal('dark', 'warning')">Warning</button>
+                </div>
+            </div>
+            
+            <div class="theme-preview">
+                <div class="theme-header">
+                    <h3 class="theme-name">✨ 简约主题</h3>
+                    <span class="theme-badge">极简风格</span>
+                </div>
+                <p class="theme-description">注重简洁性，去除多余装饰，专注于内容本身。适合追求简洁美学的应用。</p>
+                <div class="preview-buttons">
+                    <button class="preview-btn primary" onclick="showModal('minimal', 'confirm')">体验</button>
+                    <button class="preview-btn" onclick="showModal('minimal', 'alert')">Alert</button>
+                    <button class="preview-btn" onclick="showModal('minimal', 'warning')">Warning</button>
+                </div>
+            </div>
+            
+            <div class="theme-preview">
+                <div class="theme-header">
+                    <h3 class="theme-name">🔮 毛玻璃主题</h3>
+                    <span class="theme-badge">现代感</span>
+                </div>
+                <p class="theme-description">现代的毛玻璃效果，创造层次丰富的视觉体验。透明度和模糊效果营造独特美感。</p>
+                <div class="preview-buttons">
+                    <button class="preview-btn primary" onclick="showModal('glass', 'confirm')">体验</button>
+                    <button class="preview-btn" onclick="showModal('glass', 'alert')">Alert</button>
+                    <button class="preview-btn" onclick="showModal('glass', 'warning')">Warning</button>
+                </div>
+            </div>
+            
+            <div class="theme-preview">
+                <div class="theme-header">
+                    <h3 class="theme-name">🌈 DaisyUI主题</h3>
+                    <span class="theme-badge">友好设计</span>
+                </div>
+                <p class="theme-description">鲜明的色彩和圆润的设计，友好现代的用户体验。温和的色彩搭配，用户友好。</p>
+                <div class="preview-buttons">
+                    <button class="preview-btn primary" onclick="showModal('daisyui', 'confirm')">体验</button>
+                    <button class="preview-btn" onclick="showModal('daisyui', 'alert')">Alert</button>
+                    <button class="preview-btn" onclick="showModal('daisyui', 'warning')">Warning</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="demo-title">🎭 主题轮播演示</h2>
+            <p style="color: #64748b; margin: 0 0 20px 0;">依次体验所有主题的确认弹窗</p>
+            <div class="demo-buttons">
+                <button class="demo-btn showcase" onclick="showAllThemes()">开始主题轮播</button>
+            </div>
+        </div>
+        
+        <div class="features-section">
+            <h2 class="features-title">🌟 设计特色</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🎨</div>
+                    <h4 class="feature-title">现代设计</h4>
+                    <p class="feature-desc">遵循最新的UI设计趋势</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🛡️</div>
+                    <h4 class="feature-title">样式隔离</h4>
+                    <p class="feature-desc">Shadow DOM完全隔离</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <h4 class="feature-title">响应式</h4>
+                    <p class="feature-desc">完美适配各种设备</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h4 class="feature-title">高性能</h4>
+                    <p class="feature-desc">流畅的动画效果</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <h4 class="feature-title">插件友好</h4>
+                    <p class="feature-desc">专为插件开发优化</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔧</div>
+                    <h4 class="feature-title">易于定制</h4>
+                    <p class="feature-desc">丰富的配置选项</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="dist/index.js"></script>
+    <script>
+        const EasyModal = window.EasyModal;
+        
+        const themeInfo = {
+            default: { name: '默认主题 (Shadcn风格)', desc: '现代化的设计风格，清晰的层次结构' },
+            dark: { name: '深色主题', desc: '优雅的暗色调界面，减少眼部疲劳' },
+            minimal: { name: '简约主题', desc: '注重简洁性，专注于内容本身' },
+            glass: { name: '毛玻璃主题', desc: '现代的毛玻璃效果，层次丰富' },
+            daisyui: { name: 'DaisyUI主题', desc: '鲜明的色彩和圆润的设计' }
+        };
+        
+        async function showModal(theme, type) {
+            const info = themeInfo[theme];
+            
+            try {
+                let result;
+                
+                if (type === 'alert') {
+                    result = await EasyModal.alert({
+                        title: `${info.name} - Alert`,
+                        content: `${info.desc}。这是一个Alert类型的弹窗演示。`,
+                        theme: theme
+                    });
+                } else if (type === 'confirm') {
+                    result = await EasyModal.confirm({
+                        title: `${info.name} - Confirm`,
+                        content: `${info.desc}。您觉得这个主题怎么样？`,
+                        theme: theme,
+                        confirmText: '很棒',
+                        cancelText: '一般'
+                    });
+                } else if (type === 'warning') {
+                    result = await EasyModal.warning({
+                        title: `${info.name} - Warning`,
+                        content: `${info.desc}。这是一个Warning类型的弹窗演示。`,
+                        theme: theme,
+                        warningText: '了解',
+                        cancelText: '返回'
+                    });
+                }
+                
+                console.log(`${info.name} ${type} 结果:`, result);
+            } catch (error) {
+                console.error('弹窗显示失败:', error);
+            }
+        }
+        
+        async function showAllThemes() {
+            const themes = ['default', 'dark', 'minimal', 'glass', 'daisyui'];
+            
+            for (let i = 0; i < themes.length; i++) {
+                const theme = themes[i];
+                const info = themeInfo[theme];
+                
+                await EasyModal.confirm({
+                    title: `${i + 1}/5 - ${info.name}`,
+                    content: `${info.desc}。\n\n这是第${i + 1}个主题演示，点击"下一个"继续，或点击"结束"停止演示。`,
+                    theme: theme,
+                    confirmText: i === themes.length - 1 ? '完成' : '下一个',
+                    cancelText: '结束'
+                }).then(result => {
+                    if (!result.confirmed && i < themes.length - 1) {
+                        throw new Error('用户取消了演示');
+                    }
+                }).catch(() => {
+                    break;
+                });
+            }
+
+            // 演示完成
+            EasyModal.alert({
+                title: '🎉 演示完成',
+                content: '您已经体验了所有5种主题！每种主题都有其独特的设计风格和使用场景。',
+                theme: 'default'
+            });
+        }
+        
+        // 页面加载完成后显示欢迎信息
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                EasyModal.alert({
+                    title: '🎨 主题对比展示',
+                    content: '欢迎来到主题对比页面！点击各个主题卡片中的按钮来体验不同的弹窗效果。',
+                    theme: 'default'
+                });
+            }, 800);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyModal - 主题展示</title>
+    <style>
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 0 16px 0;
+            background: linear-gradient(45deg, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .theme-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .theme-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+        }
+        
+        .theme-card p {
+            opacity: 0.8;
+            margin: 0 0 24px 0;
+            font-size: 0.95rem;
+        }
+        
+        .theme-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0 8px 8px 0;
+        }
+        
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        .theme-btn.primary {
+            background: rgba(59, 130, 246, 0.8);
+            border-color: rgba(59, 130, 246, 0.9);
+        }
+        
+        .theme-btn.primary:hover {
+            background: rgba(59, 130, 246, 0.9);
+        }
+        
+        .features {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .features h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0 0 24px 0;
+        }
+        
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+        }
+        
+        .feature-item h4 {
+            margin: 0 0 8px 0;
+            font-weight: 600;
+        }
+        
+        .feature-item p {
+            margin: 0;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .themes-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .theme-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>EasyModal</h1>
+        <p>简单易用的弹窗组件库 - 多种精美主题</p>
+    </div>
+    
+    <div class="themes-grid">
+        <div class="theme-card">
+            <h3>🎨 默认主题 (Shadcn风格)</h3>
+            <p>现代化的设计风格，清晰的层次结构，优雅的动画效果</p>
+            <button class="theme-btn primary" onclick="showTheme('default', 'alert')">Alert</button>
+            <button class="theme-btn" onclick="showTheme('default', 'confirm')">Confirm</button>
+            <button class="theme-btn" onclick="showTheme('default', 'warning')">Warning</button>
+        </div>
+        
+        <div class="theme-card">
+            <h3>🌙 深色主题</h3>
+            <p>优雅的暗色调界面，减少眼部疲劳，适合低光环境</p>
+            <button class="theme-btn primary" onclick="showTheme('dark', 'alert')">Alert</button>
+            <button class="theme-btn" onclick="showTheme('dark', 'confirm')">Confirm</button>
+            <button class="theme-btn" onclick="showTheme('dark', 'warning')">Warning</button>
+        </div>
+        
+        <div class="theme-card">
+            <h3>✨ 简约主题</h3>
+            <p>注重简洁性，去除多余装饰，专注于内容本身</p>
+            <button class="theme-btn primary" onclick="showTheme('minimal', 'alert')">Alert</button>
+            <button class="theme-btn" onclick="showTheme('minimal', 'confirm')">Confirm</button>
+            <button class="theme-btn" onclick="showTheme('minimal', 'warning')">Warning</button>
+        </div>
+        
+        <div class="theme-card">
+            <h3>🔮 毛玻璃主题</h3>
+            <p>现代的毛玻璃效果，创造层次丰富的视觉体验</p>
+            <button class="theme-btn primary" onclick="showTheme('glass', 'alert')">Alert</button>
+            <button class="theme-btn" onclick="showTheme('glass', 'confirm')">Confirm</button>
+            <button class="theme-btn" onclick="showTheme('glass', 'warning')">Warning</button>
+        </div>
+        
+        <div class="theme-card">
+            <h3>🌈 DaisyUI主题</h3>
+            <p>鲜明的色彩和圆润的设计，友好现代的用户体验</p>
+            <button class="theme-btn primary" onclick="showTheme('daisyui', 'alert')">Alert</button>
+            <button class="theme-btn" onclick="showTheme('daisyui', 'confirm')">Confirm</button>
+            <button class="theme-btn" onclick="showTheme('daisyui', 'warning')">Warning</button>
+        </div>
+    </div>
+    
+    <div class="features">
+        <h2>✨ 核心特性</h2>
+        <p>专为插件开发设计的现代化弹窗组件库</p>
+        
+        <div class="features-list">
+            <div class="feature-item">
+                <h4>🛡️ 完全样式隔离</h4>
+                <p>使用Shadow DOM技术，确保样式不受页面影响</p>
+            </div>
+            <div class="feature-item">
+                <h4>🚀 零依赖</h4>
+                <p>基于原生JavaScript，无需任何外部框架</p>
+            </div>
+            <div class="feature-item">
+                <h4>📱 响应式设计</h4>
+                <p>完美适配桌面端和移动端设备</p>
+            </div>
+            <div class="feature-item">
+                <h4>⚡ TypeScript支持</h4>
+                <p>完整的类型定义，优秀的开发体验</p>
+            </div>
+            <div class="feature-item">
+                <h4>🎯 插件友好</h4>
+                <p>专为浏览器插件开发优化设计</p>
+            </div>
+            <div class="feature-item">
+                <h4>🎨 多种主题</h4>
+                <p>内置5种精美主题，满足不同设计需求</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="dist/index.js"></script>
+    <script>
+        const EasyModal = window.EasyModal;
+        
+        const themeDescriptions = {
+            default: {
+                alert: '这是默认主题的提示弹窗，采用现代化的Shadcn设计风格。',
+                confirm: '这是默认主题的确认弹窗，您可以选择确认或取消操作。',
+                warning: '这是默认主题的警告弹窗，请谨慎考虑您的选择。'
+            },
+            dark: {
+                alert: '深色主题提供了优雅的暗色调界面，适合在低光环境下使用。',
+                confirm: '深色主题的确认弹窗，减少眼部疲劳的同时保持良好的可读性。',
+                warning: '深色主题的警告弹窗，在暗色背景下突出重要信息。'
+            },
+            minimal: {
+                alert: '简约主题去除了多余的装饰，专注于内容的清晰传达。',
+                confirm: '简约主题的确认弹窗，简洁明了的设计风格。',
+                warning: '简约主题的警告弹窗，用最少的元素传达最重要的信息。'
+            },
+            glass: {
+                alert: '毛玻璃主题使用了现代的模糊效果，创造出层次丰富的视觉体验。',
+                confirm: '毛玻璃主题的确认弹窗，透明度和模糊效果营造出独特的美感。',
+                warning: '毛玻璃主题的警告弹窗，在保持美观的同时突出警告信息。'
+            },
+            daisyui: {
+                alert: 'DaisyUI主题采用了鲜明的色彩和圆润的设计，带来友好的用户体验。',
+                confirm: 'DaisyUI主题的确认弹窗，色彩丰富且用户友好的界面设计。',
+                warning: 'DaisyUI主题的警告弹窗，用温和的方式传达重要的警告信息。'
+            }
+        };
+        
+        async function showTheme(theme, type) {
+            const description = themeDescriptions[theme][type];
+            const themeNames = {
+                default: '默认主题',
+                dark: '深色主题',
+                minimal: '简约主题',
+                glass: '毛玻璃主题',
+                daisyui: 'DaisyUI主题'
+            };
+            
+            try {
+                let result;
+                
+                if (type === 'alert') {
+                    result = await EasyModal.alert({
+                        title: `${themeNames[theme]} - Alert`,
+                        content: description,
+                        theme: theme
+                    });
+                } else if (type === 'confirm') {
+                    result = await EasyModal.confirm({
+                        title: `${themeNames[theme]} - Confirm`,
+                        content: description,
+                        theme: theme,
+                        confirmText: '确认',
+                        cancelText: '取消'
+                    });
+                } else if (type === 'warning') {
+                    result = await EasyModal.warning({
+                        title: `${themeNames[theme]} - Warning`,
+                        content: description,
+                        theme: theme,
+                        warningText: '继续',
+                        cancelText: '取消'
+                    });
+                }
+                
+                console.log(`${themeNames[theme]} ${type} 结果:`, result);
+            } catch (error) {
+                console.error('弹窗显示失败:', error);
+            }
+        }
+        
+        // 页面加载完成后显示欢迎信息
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                EasyModal.alert({
+                    title: '🎉 欢迎体验 EasyModal',
+                    content: '点击上方的按钮来体验不同主题的弹窗效果！每个主题都有独特的设计风格。',
+                    theme: 'default'
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyModal - 简单示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+        }
+        
+        .btn.warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .btn.warning:hover {
+            background: #e0a800;
+        }
+        
+        .code {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #007bff;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>EasyModal - 简单示例</h1>
+
+    <p>这是一个最简单的使用示例，展示如何在你的项目中快速集成 EasyModal。</p>
+    
+    <h2>基础用法</h2>
+    
+    <button class="btn" onclick="showSimpleAlert()">简单提示</button>
+    <button class="btn" onclick="showSimpleConfirm()">确认对话框</button>
+    <button class="btn warning" onclick="showSimpleWarning()">警告对话框</button>
+    
+    <div class="code">
+// 简单提示
+await EasyModal.alert({
+    title: '提示',
+    content: '操作成功！'
+});
+
+// 确认对话框
+const result = await EasyModal.confirm({
+    title: '确认',
+    content: '确定要删除这个文件吗？'
+});
+
+if (result.confirmed) {
+    console.log('用户确认了操作');
+}
+    </div>
+    
+    <h2>高级用法</h2>
+    
+    <button class="btn" onclick="showAdvancedModal()">高级弹窗</button>
+    <button class="btn" onclick="showCountdownModal()">倒计时弹窗</button>
+    <button class="btn" onclick="showDarkModal()">深色主题</button>
+    
+    <div class="code">
+// 高级配置
+await EasyModal.confirm({
+    title: '高级配置',
+    content: '这是一个配置了多个选项的弹窗',
+    theme: 'dark',
+    width: 400,
+    countdown: 10,
+    confirmText: '同意',
+    cancelText: '拒绝',
+    onConfirm: async () => {
+        console.log('用户点击了同意');
+    }
+});
+    </div>
+    
+    <h2>在插件中使用</h2>
+    
+    <p>在浏览器插件中，你可以这样使用：</p>
+    
+    <div class="code">
+// content script 中
+import { EasyModal } from 'easymodal';
+
+// 或者直接引入UMD版本
+// &lt;script src="easymodal/dist/index.js"&gt;&lt;/script&gt;
+// const EasyModal = window.EasyModal;
+
+// 显示弹窗
+EasyModal.alert({
+    title: '插件通知',
+    content: '页面加载完成！'
+});
+    </div>
+    
+    <!-- 引入库 -->
+    <script src="dist/index.js"></script>
+    
+    <script>
+        // 获取EasyModal
+        const EasyModal = window.EasyModal;
+        
+        async function showSimpleAlert() {
+            await EasyModal.alert({
+                title: '提示',
+                content: '这是一个简单的提示弹窗！'
+            });
+        }
+
+        async function showSimpleConfirm() {
+            const result = await EasyModal.confirm({
+                title: '确认',
+                content: '确定要执行这个操作吗？'
+            });
+
+            if (result.confirmed) {
+                EasyModal.alert({
+                    content: '操作已确认！'
+                });
+            } else {
+                EasyModal.alert({
+                    content: '操作已取消。'
+                });
+            }
+        }
+
+        async function showSimpleWarning() {
+            const result = await EasyModal.warning({
+                title: '警告',
+                content: '这个操作不可撤销，确定要继续吗？',
+                warningText: '继续',
+                cancelText: '取消'
+            });
+
+            if (result.confirmed) {
+                EasyModal.alert({
+                    content: '操作已执行！'
+                });
+            }
+        }
+
+        async function showAdvancedModal() {
+            await EasyModal.confirm({
+                title: '高级配置',
+                content: [
+                    '这是一个高级配置的弹窗：',
+                    '• 自定义宽度',
+                    '• 多行内容',
+                    '• 自定义按钮文本'
+                ],
+                width: 400,
+                confirmText: '同意',
+                cancelText: '拒绝',
+                onConfirm: () => {
+                    console.log('用户点击了同意');
+                }
+            });
+        }
+
+        async function showCountdownModal() {
+            await EasyModal.alert({
+                title: '倒计时弹窗',
+                content: '这个弹窗将在5秒后自动关闭',
+                countdown: 5
+            });
+        }
+
+        async function showDarkModal() {
+            await EasyModal.alert({
+                title: '深色主题',
+                content: '这是深色主题的弹窗样式',
+                theme: 'dark'
+            });
+        }
+    </script>
+</body>
+</html>

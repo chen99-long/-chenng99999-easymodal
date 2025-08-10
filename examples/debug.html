@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyModal - 调试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .debug-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>EasyModal 调试页面</h1>
+    
+    <div class="debug-info" id="debug-info">
+        正在加载...
+    </div>
+    
+    <button class="btn" onclick="testBasicAlert()">测试基础Alert</button>
+    <button class="btn" onclick="testBasicConfirm()">测试基础Confirm</button>
+    
+    <script src="dist/index.js"></script>
+    <script>
+        // 调试信息
+        function updateDebugInfo() {
+            const debugInfo = document.getElementById('debug-info');
+            debugInfo.innerHTML = `
+调试信息：
+- window 对象存在: ${typeof window !== 'undefined'}
+- window.EasyModal 存在: ${typeof window.EasyModal !== 'undefined'}
+- window.EasyModal 类型: ${typeof window.EasyModal}
+- EasyModal.alert 存在: ${typeof window.EasyModal?.alert !== 'undefined'}
+- EasyModal.confirm 存在: ${typeof window.EasyModal?.confirm !== 'undefined'}
+            `;
+        }
+        
+        // 页面加载完成后更新调试信息
+        window.addEventListener('load', () => {
+            setTimeout(updateDebugInfo, 100);
+        });
+        
+        // 立即更新一次
+        updateDebugInfo();
+        
+        // 获取EasyModal
+        const EasyModal = window.EasyModal;
+        
+        async function testBasicAlert() {
+            try {
+                console.log('开始测试 Alert');
+                console.log('EasyModal:', EasyModal);
+
+                if (!EasyModal) {
+                    alert('EasyModal 未定义！');
+                    return;
+                }
+
+                const result = await EasyModal.alert({
+                    title: '测试Alert',
+                    content: '这是一个测试Alert弹窗'
+                });
+
+                console.log('Alert 结果:', result);
+                alert('Alert 测试成功！结果: ' + JSON.stringify(result));
+            } catch (error) {
+                console.error('Alert 测试失败:', error);
+                alert('Alert 测试失败: ' + error.message);
+            }
+        }
+        
+        async function testBasicConfirm() {
+            try {
+                console.log('开始测试 Confirm');
+
+                if (!EasyModal) {
+                    alert('EasyModal 未定义！');
+                    return;
+                }
+
+                const result = await EasyModal.confirm({
+                    title: '测试Confirm',
+                    content: '这是一个测试Confirm弹窗，请选择确定或取消'
+                });
+
+                console.log('Confirm 结果:', result);
+                alert('Confirm 测试成功！结果: ' + JSON.stringify(result));
+            } catch (error) {
+                console.error('Confirm 测试失败:', error);
+                alert('Confirm 测试失败: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

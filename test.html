@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyModal - 测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* 这些样式应该不会影响弹窗 */
+        * {
+            box-sizing: border-box !important;
+            font-family: 'Comic Sans MS' !important;
+        }
+        
+        div {
+            background: red !important;
+            color: yellow !important;
+        }
+    </style>
+</head>
+<body>
+    <h1>EasyModal 测试页面</h1>
+    
+    <p>这个页面有一些强制性的CSS样式，用来测试弹窗的样式隔离效果。</p>
+    
+    <button class="btn" onclick="testAlert()">测试 Alert</button>
+    <button class="btn" onclick="testConfirm()">测试 Confirm</button>
+    <button class="btn" onclick="testWarning()">测试 Warning</button>
+    <button class="btn" onclick="testThemes()">测试主题</button>
+    
+    <script src="dist/index.js"></script>
+    <script>
+        const EasyModal = window.EasyModal;
+        
+        async function testAlert() {
+            await EasyModal.alert({
+                title: '测试提示',
+                content: '这是一个测试提示，样式应该不受页面影响'
+            });
+        }
+
+        async function testConfirm() {
+            const result = await EasyModal.confirm({
+                title: '测试确认',
+                content: '这是一个测试确认弹窗，点击确定或取消'
+            });
+
+            console.log('用户选择:', result);
+        }
+
+        async function testWarning() {
+            const result = await EasyModal.warning({
+                title: '测试警告',
+                content: '这是一个测试警告弹窗',
+                warningText: '继续',
+                cancelText: '取消'
+            });
+
+            console.log('用户选择:', result);
+        }
+
+        async function testThemes() {
+            await EasyModal.alert({
+                title: '默认主题',
+                content: '这是默认主题'
+            });
+
+            await EasyModal.alert({
+                title: '深色主题',
+                content: '这是深色主题',
+                theme: 'dark'
+            });
+
+            await EasyModal.alert({
+                title: '简约主题',
+                content: '这是简约主题',
+                theme: 'minimal'
+            });
+        }
+        
+        // 页面加载完成后自动测试
+        window.addEventListener('load', () => {
+            console.log('EasyModal 已加载');
+            console.log('EasyModal:', EasyModal);
+        });
+    </script>
+</body>
+</html>

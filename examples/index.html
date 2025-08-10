@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyModal - 示例</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .demo-section h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        
+        .demo-button {
+            padding: 10px 20px;
+            border: 1px solid #007bff;
+            background: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .demo-button:hover {
+            background: #0056b3;
+        }
+        
+        .demo-button.secondary {
+            background: #6c757d;
+            border-color: #6c757d;
+        }
+        
+        .demo-button.secondary:hover {
+            background: #545b62;
+        }
+        
+        .demo-button.warning {
+            background: #ffc107;
+            border-color: #ffc107;
+            color: #212529;
+        }
+        
+        .demo-button.warning:hover {
+            background: #e0a800;
+        }
+        
+        .result-display {
+            margin-top: 15px;
+            padding: 10px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+        
+        .original-styles {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .original-styles h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .original-styles p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <h1>EasyModal 示例</h1>
+    <p>这个页面展示了如何使用 EasyModal 简单易用的弹窗组件库。注意弹窗的样式完全独立，不会被页面样式影响。</p>
+
+    <div class="original-styles">
+        <h2>原网站的样式</h2>
+        <p>这里模拟原网站的复杂样式，弹窗不会被这些样式影响</p>
+    </div>
+
+    <div class="demo-section">
+        <h3>基础弹窗类型</h3>
+        <div class="button-group">
+            <button class="demo-button" onclick="showAlert()">Alert 提示</button>
+            <button class="demo-button" onclick="showConfirm()">Confirm 确认</button>
+            <button class="demo-button warning" onclick="showWarning()">Warning 警告</button>
+            <button class="demo-button secondary" onclick="showInfo()">Info 信息</button>
+        </div>
+        <div id="basic-result" class="result-display">点击按钮查看结果...</div>
+    </div>
+
+    <div class="demo-section">
+        <h3>主题样式</h3>
+        <div class="button-group">
+            <button class="demo-button" onclick="showDefaultTheme()">默认主题</button>
+            <button class="demo-button" onclick="showDarkTheme()">深色主题</button>
+            <button class="demo-button" onclick="showMinimalTheme()">简约主题</button>
+            <button class="demo-button" onclick="showGlassTheme()">毛玻璃主题</button>
+            <button class="demo-button" onclick="showDaisyUITheme()">DaisyUI主题</button>
+        </div>
+        <div id="theme-result" class="result-display">点击按钮查看不同主题效果...</div>
+    </div>
+
+    <div class="demo-section">
+        <h3>高级功能</h3>
+        <div class="button-group">
+            <button class="demo-button" onclick="showCountdown()">倒计时弹窗</button>
+            <button class="demo-button" onclick="showCustomContent()">自定义内容</button>
+            <button class="demo-button" onclick="showDestructiveAction()">危险操作</button>
+            <button class="demo-button" onclick="showResponsiveModal()">响应式弹窗</button>
+        </div>
+        <div id="advanced-result" class="result-display">点击按钮查看结果...</div>
+    </div>
+
+    <div class="demo-section">
+        <h3>自定义弹窗</h3>
+        <div class="button-group">
+            <button class="demo-button" onclick="showCustomModal()">创建自定义弹窗</button>
+            <button class="demo-button secondary" onclick="updateCustomModal()">更新内容</button>
+            <button class="demo-button warning" onclick="destroyAllModals()">销毁所有弹窗</button>
+        </div>
+        <div id="custom-result" class="result-display">点击按钮查看结果...</div>
+    </div>
+
+    <!-- 引入构建后的库 -->
+    <script src="dist/index.js"></script>
+
+    <script>
+        // 使用全局变量 EasyModal
+        const EasyModal = window.EasyModal;
+
+        let customModal = null;
+
+        // 基础示例
+        async function showAlert() {
+            const result = await EasyModal.alert({
+                title: '提示',
+                content: '这是一个简单的提示弹窗！'
+            });
+            document.getElementById('basic-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function showConfirm() {
+            const result = await EasyModal.confirm({
+                title: '确认操作',
+                content: '您确定要执行这个操作吗？',
+                confirmText: '确定',
+                cancelText: '取消'
+            });
+            document.getElementById('basic-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function showWarning() {
+            const result = await EasyModal.warning({
+                title: '警告',
+                content: '这个操作可能有风险，请谨慎选择！',
+                warningText: '继续',
+                cancelText: '取消'
+            });
+            document.getElementById('basic-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function showInfo() {
+            const result = await EasyModal.info({
+                title: '信息',
+                content: '这是一条重要信息，请仔细阅读。'
+            });
+            document.getElementById('basic-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        // 主题演示
+        async function showDefaultTheme() {
+            const result = await EasyModal.confirm({
+                title: '默认主题 (Shadcn风格)',
+                content: '这是默认主题，采用现代化的设计风格，具有清晰的层次和优雅的动画效果。',
+                theme: 'default',
+                confirmText: '确认',
+                cancelText: '取消'
+            });
+            document.getElementById('theme-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function showDarkTheme() {
+            const result = await EasyModal.confirm({
+                title: '深色主题',
+                content: '深色主题提供了优雅的暗色调界面，减少眼部疲劳，适合在低光环境下使用。',
+                theme: 'dark',
+                confirmText: '喜欢',
+                cancelText: '返回'
+            });
+            document.getElementById('theme-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function showMinimalTheme() {
+            const result = await EasyModal.alert({
+                title: '简约主题',
+                content: '简约主题注重简洁性，去除了多余的装饰，专注于内容本身。',
+                theme: 'minimal'
+            });
+            document.getElementById('theme-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function showGlassTheme() {
+            const result = await EasyModal.warning({
+                title: '毛玻璃主题',
+                content: '毛玻璃主题使用了现代的毛玻璃效果，创造出层次丰富的视觉体验。',
+                theme: 'glass',
+                warningText: '体验',
+                cancelText: '返回'
+            });
+            document.getElementById('theme-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function showDaisyUITheme() {
+            const result = await EasyModal.confirm({
+                title: 'DaisyUI主题',
+                content: 'DaisyUI主题采用了鲜明的色彩和圆润的设计，带来友好和现代的用户体验。',
+                theme: 'daisyui',
+                confirmText: '太棒了',
+                cancelText: '返回'
+            });
+            document.getElementById('theme-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        // 高级功能示例
+        async function showCountdown() {
+            const result = await EasyModal.alert({
+                title: '倒计时弹窗',
+                content: '这个弹窗将在5秒后自动关闭，展示了倒计时功能。',
+                countdown: 5,
+                theme: 'default'
+            });
+            document.getElementById('advanced-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function showCustomContent() {
+            const result = await EasyModal.confirm({
+                title: '自定义内容',
+                content: [
+                    '支持多行内容：',
+                    '• 第一行内容',
+                    '• 第二行内容',
+                    '• <strong>支持HTML标签</strong>',
+                    '• <em>样式完全隔离</em>',
+                    '• 🎨 支持Emoji表情'
+                ],
+                width: 450,
+                theme: 'default'
+            });
+            document.getElementById('advanced-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function showDestructiveAction() {
+            const result = await EasyModal.confirm({
+                title: '危险操作',
+                content: '此操作将永久删除所有数据，且无法恢复。请确认您真的要继续吗？',
+                confirmText: '删除',
+                cancelText: '取消',
+                theme: 'default'
+            });
+            document.getElementById('advanced-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        async function showResponsiveModal() {
+            const isMobile = window.innerWidth < 768;
+            const result = await EasyModal.info({
+                title: '响应式设计',
+                content: `当前设备: ${isMobile ? '移动设备' : '桌面设备'}\n弹窗会自动适配不同屏幕尺寸，在移动设备上按钮会垂直排列。`,
+                width: isMobile ? '90%' : '500px',
+                theme: 'default'
+            });
+            document.getElementById('advanced-result').textContent = JSON.stringify(result, null, 2);
+        }
+
+        // 自定义弹窗示例
+        function showCustomModal() {
+            customModal = EasyModal.create({
+                type: 'custom',
+                title: '自定义弹窗',
+                content: '这是一个自定义弹窗，可以手动控制显示和隐藏',
+                showClose: true,
+                onClose: () => {
+                    document.getElementById('custom-result').textContent = '自定义弹窗已关闭';
+                }
+            });
+
+            customModal.show();
+            document.getElementById('custom-result').textContent = '自定义弹窗已创建并显示';
+        }
+
+        function updateCustomModal() {
+            if (customModal) {
+                customModal.updateTitle('更新后的标题');
+                customModal.updateContent('内容已更新！当前时间：' + new Date().toLocaleTimeString());
+                document.getElementById('custom-result').textContent = '自定义弹窗内容已更新';
+            } else {
+                document.getElementById('custom-result').textContent = '请先创建自定义弹窗';
+            }
+        }
+
+        function destroyAllModals() {
+            EasyModal.destroyAll();
+            customModal = null;
+            document.getElementById('custom-result').textContent = '所有弹窗已销毁';
+        }
+    </script>
+</body>
+</html>
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .original-styles h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .original-styles p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Plugin Modal Kit 示例</h1>
+    <p>这个页面演示了如何在插件开发中使用 Plugin Modal Kit。注意弹窗的样式完全独立，不会被页面样式影响。</p>
+    
+    <div class="original-styles">
+        <h2>原网站的样式</h2>
+        <p>这里模拟原网站的复杂样式，弹窗不会受到影响</p>
+    </div>
+    
+    <div class="demo-section">
+        <h3>基础弹窗类型</h3>
+        <div class="button-group">
+            <button class="demo-button" onclick="showAlert()">Alert 提示</button>
+            <button class="demo-button" onclick="showConfirm()">Confirm 确认</button>
+            <button class="demo-button warning" onclick="showWarning()">Warning 警告</button>
+            <button class="demo-button secondary" onclick="showInfo()">Info 信息</button>
+        </div>
+        <div id="basic-result" class="result-display">点击按钮查看结果...</div>
+    </div>
+    
+    <div class="demo-section">
+        <h3>高级功能</h3>
+        <div class="button-group">
+            <button class="demo-button" onclick="showCountdown()">倒计时弹窗</button>
+            <button class="demo-button" onclick="showCustomSize()">自定义尺寸</button>
+            <button class="demo-button" onclick="showDarkTheme()">深色主题</button>
+            <button class="demo-button" onclick="showMinimalTheme()">简约主题</button>
+        </div>
+        <div id="advanced-result" class="result-display">点击按钮查看结果...</div>
+    </div>
+    
+    <div class="demo-section">
+        <h3>自定义内容</h3>
+        <div class="button-group">
+            <button class="demo-button" onclick="showHtmlContent()">HTML内容</button>
+            <button class="demo-button" onclick="showMultilineContent()">多行内容</button>
+            <button class="demo-button" onclick="showCustomButtons()">自定义按钮</button>
+        </div>
+        <div id="custom-result" class="result-display">点击按钮查看结果...</div>
+    </div>
+    
+    <div class="demo-section">
+        <h3>实例管理</h3>
+        <div class="button-group">
+            <button class="demo-button" onclick="showMultiple()">显示多个弹窗</button>
+            <button class="demo-button secondary" onclick="destroyAll()">销毁所有弹窗</button>
+            <button class="demo-button secondary" onclick="showActiveCount()">查看活跃实例</button>
+        </div>
+        <div id="management-result" class="result-display">点击按钮查看结果...</div>
+    </div>
+
+    <!-- 引入构建后的库 -->
+    <script src="../dist/index.js"></script>
+    
+    <script>
+        // 使用全局变量 PluginModalKit
+        const { confirm, alert, info, warning, create, destroyAll, getActiveInstances } = window.PluginModalKit;
+        
+        // 基础弹窗示例
+        async function showAlert() {
+            const result = await alert({
+                title: '提示',
+                content: '这是一个简单的提示弹窗！'
+            });
+            document.getElementById('basic-result').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function showConfirm() {
+            const result = await confirm({
+                title: '确认操作',
+                content: '您确定要执行这个操作吗？',
+                confirmText: '确定',
+                cancelText: '取消'
+            });
+            document.getElementById('basic-result').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function showWarning() {
+            const result = await warning({
+                title: '警告',
+                content: '这个操作可能有风险，请谨慎选择！',
+                warningText: '继续',
+                cancelText: '取消'
+            });
+            document.getElementById('basic-result').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function showInfo() {
+            const result = await info({
+                title: '信息',
+                content: '这是一条重要信息，请仔细阅读。'
+            });
+            document.getElementById('basic-result').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        // 高级功能示例
+        async function showCountdown() {
+            const result = await alert({
+                title: '倒计时弹窗',
+                content: '这个弹窗将在5秒后自动关闭',
+                countdown: 5
+            });
+            document.getElementById('advanced-result').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function showCustomSize() {
+            const result = await alert({
+                title: '自定义尺寸',
+                content: '这个弹窗有自定义的宽度和最大宽度设置',
+                width: '600px',
+                maxWidth: '90vw'
+            });
+            document.getElementById('advanced-result').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function showDarkTheme() {
+            const result = await alert({
+                title: '深色主题',
+                content: '这是深色主题的弹窗样式',
+                theme: 'dark'
+            });
+            document.getElementById('advanced-result').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function showMinimalTheme() {
+            const result = await alert({
+                title: '简约主题',
+                content: '这是简约主题的弹窗样式',
+                theme: 'minimal'
+            });
+            document.getElementById('advanced-result').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        // 自定义内容示例
+        async function showHtmlContent() {
+            const result = await alert({
+                title: 'HTML内容',
+                content: '<p>支持 <strong>HTML</strong> 内容</p><ul><li>列表项 1</li><li>列表项 2</li></ul>'
+            });
+            document.getElementById('custom-result').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function showMultilineContent() {
+            const result = await alert({
+                title: '多行内容',
+                content: [
+                    '第一行内容',
+                    '第二行内容',
+                    '第三行内容'
+                ]
+            });
+            document.getElementById('custom-result').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function showCustomButtons() {
+            const result = await confirm({
+                title: '自定义按钮',
+                content: '这个弹窗有自定义的按钮文本',
+                confirmText: '同意',
+                cancelText: '拒绝'
+            });
+            document.getElementById('custom-result').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        // 实例管理示例
+        function showMultiple() {
+            // 创建多个弹窗实例
+            setTimeout(() => alert({ title: '弹窗 1', content: '第一个弹窗' }), 100);
+            setTimeout(() => alert({ title: '弹窗 2', content: '第二个弹窗' }), 200);
+            setTimeout(() => alert({ title: '弹窗 3', content: '第三个弹窗' }), 300);
+            
+            document.getElementById('management-result').textContent = '已创建3个弹窗实例';
+        }
+        
+        function destroyAll() {
+            destroyAll();
+            document.getElementById('management-result').textContent = '所有弹窗已销毁';
+        }
+        
+        function showActiveCount() {
+            const instances = getActiveInstances();
+            document.getElementById('management-result').textContent = `当前活跃实例数量: ${instances.length}`;
+        }
+    </script>
+</body>
+</html>
