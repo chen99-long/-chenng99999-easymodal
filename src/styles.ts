@@ -37,6 +37,7 @@ export function getModalStyles(theme: ModalTheme = 'default'): string {
       justify-content: center;
       opacity: 0;
       transition: all 0.2s ease-out;
+      z-index: 2147483647;
     }
 
     .modal-overlay.show {
